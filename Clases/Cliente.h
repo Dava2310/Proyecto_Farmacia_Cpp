@@ -12,12 +12,12 @@ class Cliente {
     private:
         // Atributos del cliente
         string nombre; // 20 caracteres 20 - 6 = 14
-        string apellido; // 20 caracteres 20 - 6 = 14
+        string apellido; // 20 caracteres 20 - 8 = 12
         int edad; // 5 caracteres 5 - 4 = 1
-        string cedula; // 9 caracteres 9 - 8 = 1
-        float estatura; // 10
+        string cedula; // 9 caracteres 9 - 6 = 3
+        float estatura; // 9 - 8 = 1
         float peso; // 6 caracteres 6 - 4 = 2
-        float dineroCuenta;
+        float dineroCuenta; // Dinero en Cuenta 18 - 16 = 2
         vector<Producto*> lista_compra;
     public:
         // Constructor

@@ -22,6 +22,9 @@ void listarClientes();
 void bordes();
 bool encontrarCliente(const string &cedula);
 bool encontrarProducto(const string &codigo);
+
+int numerosNo_Decimales(float);
+
 // Lista de clientes
 vector<Cliente*> listaClientes;
 
@@ -30,6 +33,7 @@ vector<Producto*> listaProductos;
 
 int main(){
 
+    crearCliente();
     crearCliente();
     listarClientes();
     system("pause");
@@ -155,52 +159,174 @@ void listarClientes(){
 
     cout << "\t\tLISTADO DE ESTUDANTES " << endl << endl;
 
-    for (int i = 0; i < listaClientes.size(); i++) {
+    // Primer borde
+    bordes();
 
-        cout << "Nombre: " << listaClientes.at(i)->getNombre() << endl;
-        cout << "Apellido: " << listaClientes.at(i)->getApellido() << endl;
-        cout << "Edad: " << listaClientes.at(i)->getEdad() << endl;
-        cout << "Cedula: " << listaClientes.at(i)->getCedula() << endl;
-        cout << "Estatura: " << listaClientes.at(i)->getEstatura() << endl;
-        cout << "Peso: " << listaClientes.at(i)->getPeso() << endl;
-        cout << "Dinero: " << listaClientes.at(i)->getDinero() << endl;
+    // Centro con los titulos
+    cout << "|";
+    cout << "Nombre";
+    for (int i = 0; i < 14; i++) {
+        cout << " ";
     }
-    
+    cout << "|";
+    cout << "Apellido";
+    for (int i = 0; i < 12; i++) {
+        cout << " ";
+    }
+    cout << "|";
+    cout << "Edad";
+    for (int i = 0; i < 1; i++) {
+        cout << " ";
+    }
+    cout << "|";
+    cout << "Cedula";
+    for (int i = 0; i < 3; i++) {
+        cout << " ";
+    }
+    cout << "|";
+    cout << "Estatura";
+    for (int i = 0; i < 1; i++) {
+        cout << " ";
+    }
+    cout << "|";
+    cout << "Peso";
+    for (int i = 0; i < 2; i++) {
+        cout << " ";
+    }
+    cout << "|";
+    cout << "Dinero en Cuenta";
+    for (int i = 0; i < 2; i++) {
+        cout << " ";
+    }
+    cout << "|" << endl;
 
+    // Segundo borde
+    bordes();
+
+    // Recorrido de la lista de clientes
+    for (int i = 0; i < listaClientes.size(); i++) 
+    {
+
+        Cliente *cliente = listaClientes[i];
+
+        string nombre = cliente->getNombre();
+        string apellido = cliente->getApellido();
+        int edad = cliente->getEdad();
+        string cedula = cliente->getCedula();
+        float estatura = cliente->getEstatura();
+        float peso = cliente->getPeso();
+        float dineroCuenta = cliente->getDinero();
+
+        // Impresion de los resultados
+
+        cout << "|";
+        cout << nombre;
+        for (int j = 0; j < 20 - nombre.length(); j++) 
+        {
+            cout << " ";
+        }
+        cout << "|";
+
+        cout << apellido;
+        for (int j = 0; j < 20 - apellido.length(); j++) 
+        {
+            cout << " ";
+        }
+        cout << "|";
+        
+        cout << edad;
+        for (int j = 0; j < 3; j++) 
+        {
+            cout << " ";
+        }
+        cout << "|";
+
+        cout << cedula;
+        for (int j = 0; j < 9 - cedula.length(); j++) 
+        {
+            cout << " ";
+        }
+        cout << "|";
+        
+        printf("%5.2f", estatura);
+        int espacios = numerosNo_Decimales(estatura);
+
+        for (int j = 0; j < 6 - espacios; j++) {
+            cout << " ";
+        }
+        cout << "|";
+
+        printf("%3.2f", peso);
+        espacios =  numerosNo_Decimales(peso);
+        for (int j = 0; j < 3 - espacios; j++) {
+            cout << " ";
+        }
+
+        // cout << " ";
+        cout << "|";
+
+        printf("%10.5f", dineroCuenta);
+        // Quedan 13
+        espacios = numerosNo_Decimales(dineroCuenta);
+        for (int j = 0; j < 12 - espacios; j++) {
+            cout << " ";
+        }
+        cout << "|";
+        // cout << "   |";
+        cout << endl;
+    }
+
+    // Ultimo borde
+    bordes();
 }
 
 void bordes(){
 
     cout << "+";
-    for (int j = 0; j < 20; j++)
-    {
+    // Nombre
+    for (int i = 0; i < 20; i++) {
         cout << "-";
     }
     cout << "+";
-    for (int j = 0; j < 20; j++)
-    {
+    // Apellido
+    for (int i = 0; i < 20; i++) {
+        cout << "-";
+    }
+    // Edad
+    cout << "+";
+    for (int i = 0; i < 5; i++) {
+        cout << "-";
+    }
+    // Cedula
+    cout << "+";
+    for (int i = 0; i < 9; i++) {
         cout << "-";
     }
     cout << "+";
-    for (int j = 0; j < 10; j++)
-    {
+    // Estatura
+    for (int i = 0; i < 9; i++) {
         cout << "-";
     }
     cout << "+";
-    for (int j = 0; j < 5; j++)
-    {
+    // Peso
+    for (int i = 0; i < 6; i++) {
         cout << "-";
     }
     cout << "+";
-    for (int j = 0; j < 9; j++)
-    {
-        cout << "-";
-    }
-    cout << "+";
-    for (int j = 0; j < 6; j++)
-    {
+    // Dinero en cuenta
+    for (int i = 0; i < 18; i++) {
         cout << "-";
     }
     cout << "+" << endl;
+}
 
+int numerosNo_Decimales(float numero) {
+
+    int cantidadCaracteres = 0;
+
+    string floatStr = to_string(numero);
+    int decimalPos = floatStr.find('.');
+    cantidadCaracteres = decimalPos;
+    // cout << "Cantidad Caracteres: " << cantidadCaracteres << endl;
+    return cantidadCaracteres;
 }
