@@ -5,7 +5,9 @@ using namespace std;
 
 #include <string>
 #include <vector>
+
 #include "Producto.h"
+#include "Compra.h"
 
 class Cliente {
 
@@ -18,13 +20,15 @@ class Cliente {
         float estatura; // 9 - 8 = 1
         float peso; // 6 caracteres 6 - 4 = 2
         float dineroCuenta; // Dinero en Cuenta 18 - 16 = 2
-        vector<Producto*> lista_compra;
+        vector<Compra*> lista_compra;
     public:
         // Constructor
         Cliente(string nombre, string apellido, int edad, string cedula, float estatura, float peso, float dineroCuenta);
-        void incluirProducto(Producto *obj_producto);
+        void incluirProducto(Producto *obj_producto, int cantidadUnidades);
         void limpiarLista();
         float sacarCuenta();
+        void retirarDinero(float);
+        void depositarDinero(float);
         // Setters
         void setNombre(const string &nombre);
         void setApellido(const string &nombre);

@@ -26,36 +26,69 @@ Producto::Producto(string codigo, string nombre, float precio, string descripcio
     while(llenado) {
 
         numeroEnfermedad++;
-        cout << "Ingrese la enfermedad #" << numeroEnfermedad << " que cubre el medicamento: ";
-        cin >> enfermedad;
+        cout << "\nIngrese la enfermedad #" << numeroEnfermedad << " que cubre el medicamento: ";
+        cin.ignore();
+        getline(cin, enfermedad);
 
         this->enfermedades_cubre.push_back(enfermedad);
 
-        cout << "\nDesea agregar otra enfermedad? (Y/N)";
+        cout << "\nDesea agregar otra enfermedad? (Y/N): ";
         cin >> opcion;
+        cout << endl;
 
         if (!(opcion == "Y" || opcion == "y")) {
-
             llenado = false;
-
         } 
     }
 }
 
-void Producto::ListarEnfermedades(){
+void Producto::ListarEnfermedades()
+{
 
-    if (enfermedades_cubre.size() < 0)
+    string enfermedad;
+
+    if (this->enfermedades_cubre.size() < 1)
     {
         cout << "Hubo un error, no se ha asignado ninguna enfermedad" << endl;
         return;
     }
-    cout << "\t\t Lista de Enfermedades que cubre el medicamento: " << this->nombre << endl << endl;
+    cout << "\n\t\t Lista de Enfermedades que cubre el medicamento: " << this->nombre << endl << endl;
 
-    for (int i = 0; i < this->enfermedades_cubre.size(); i++) {
+    // Encabezado de la tabla
+    cout << "+-----------------+----------------------------------------+" << endl;
+    cout << "|Num. Enfermedad  |Enfermedad                              |" << endl;
+    cout << "+-----------------+----------------------------------------+" << endl;
 
-        cout << "#" << (i+1) << " Enfermedad:" << this->enfermedades_cubre.at(i) << endl;
+    for (int i = 0; i < this->enfermedades_cubre.size(); i++) 
+    {
+        
+        enfermedad = this->enfermedades_cubre.at(i);
 
+        // Imprimir el numero de la enfermedad en la lista
+        cout << "|";
+        cout << (i + 1);
+
+        if ( (i+1) < 10)
+        {
+            for (int j = 0; j < 16; j++)
+                cout << " ";
+        }
+        else if ( (i+1) >= 10)
+        {
+            for (int j = 0; j < 15; j++)
+                cout << " ";
+        } 
+        cout << "|";
+
+        // Imprimir la enfermedad especifica o el nombre de la misma 
+        cout << enfermedad;
+
+        for (int j = 0; j < 40 - enfermedad.length(); j++)
+            cout << " ";
+
+        cout << "|" << endl;
     }
+    cout << "+-----------------+----------------------------------------+" << endl << endl;
 }
 
 void Producto::descontarProducto(int cantidadRequerida){
@@ -65,8 +98,15 @@ void Producto::descontarProducto(int cantidadRequerida){
         return;
     }
 
+    cout << "\nDescontando: " << cantidadRequerida << " unidad(es) del producto: " << this->codigo << endl << endl;
     this->cantidadProducto -= cantidadRequerida;
+}
 
+void Producto::agregarProductos(int cantidad)
+{   
+    // Sumando la cantidad por parametro ya verificada anteriormente en el main, a la cantidad del producto de este objeto de la clase
+    cout << "\nAgregando: " << cantidad << " unidad(es) al producto: " << this->codigo << endl << endl;
+    this->cantidadProducto += cantidad;
 }
 
 // Setters
@@ -119,4 +159,9 @@ string Producto::getCodigo(){
 
     return this->codigo;
 
+}
+
+int Producto::getCantidad()
+{
+    return this->cantidadProducto;
 }

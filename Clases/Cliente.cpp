@@ -1,6 +1,7 @@
 // Archivo fuente de la implementacion de la clase
 #include "Cliente.h"
 #include "Producto.h"
+#include "Compra.h"
 
 #include <iostream>
 #include <string>
@@ -24,18 +25,47 @@ Cliente::Cliente(string nombre, string apellido, int edad, string cedula, float 
 
 // Metodos publicos
 
-void Cliente::incluirProducto(Producto *obj_producto){
+void Cliente::incluirProducto(Producto *obj_producto, int cantidadUnidades){
+
+    Compra *nueva_compra = new Compra(obj_producto, cantidadUnidades);
+
+    if (nueva_compra == NULL)
+    {   
+        cout << "Error al agregar el nuevo item a la lista de la compra." << endl;
+        return;
+    }
 
     // Proceso para añadir un producto
-    this->lista_compra.push_back(obj_producto);
+    this->lista_compra.push_back(nueva_compra);
 
 }
 
 
 void Cliente::limpiarLista(){
 
-    this->lista_compra.clear();
 
+    // Descontar para cada producto, la cantidad de unidades especificada 
+    
+    // Recorriendo la lista de compra
+    for (int i = 0; i < this->lista_compra.size(); i++)
+    {
+        Compra *tempCompra = this->lista_compra.at(i);
+
+        Producto *tempProducto = tempCompra->getProducto();
+        int cantidadUnidades  = tempCompra->getUnidades();
+
+        // Descontar la cantidad de productos
+        tempProducto->descontarProducto(cantidadUnidades);
+
+        // Sacando la deuda parcial
+        float deudaParcial = tempProducto->getPrecio() * cantidadUnidades;
+
+        // Descontando esa deuda del dinero
+        this->retirarDinero(deudaParcial);
+    }
+    
+    // Terminado el proceso, se limpia la lista
+    this->lista_compra.clear();
 }
 
 float Cliente::sacarCuenta(){
@@ -45,11 +75,26 @@ float Cliente::sacarCuenta(){
     // Recorrer cada producto de la lista de compra
     for (int i = 0; i < this->lista_compra.size(); i++) {
 
-        cuenta += this->lista_compra.at(i)->getPrecio();
+        int cantidadUnidades = this->lista_compra.at(i)->getUnidades();
+        float precio = this->lista_compra.at(i)->getProducto()->getPrecio();
+
+        cuenta += cantidadUnidades * precio;
 
     }
 
     return cuenta;
+}
+
+void Cliente::retirarDinero(float monto)
+{
+    // Se resta del monto por parametro al dinero en cuenta
+    this->dineroCuenta -= monto;
+}
+
+void Cliente::depositarDinero(float monto)
+{
+    // Se aumenta del monto por parametro al dinero en cuenta
+    this->dineroCuenta += monto; 
 }
 
 // Setters
